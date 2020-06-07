@@ -103,7 +103,7 @@ public void OnPluginStart()
 	TopMenu hTopMenu;
 	if((hTopMenu = GetAdminTopMenu())) OnAdminMenuReady(hTopMenu);
   }
-  for(int i= 1; i <= MaxClients; i++) if(IsClientInGame(i) && !IsFakeClient(i)) SDKHook(i, SDKHook_OnTakeDamage, OnTakeDamage);
+  for(int i= 1; i <= MaxClients; i++) if(IsClientInGame(i)&&!IsFakeClient(i)) SDKHook(i, SDKHook_OnTakeDamage, OnTakeDamage);
 }
 
 public void OnAdminMenuReady(Handle aTopMenu)
@@ -268,11 +268,11 @@ public Action Cmd_Vote(int client, int args){
 
 public int checkWeapon(char[] name){
 	if (StrEqual(name,"inferno")) return 2;
-	if (StrContains(name,"knife")) return 1;
+	if (StrContains(name,"knife")!=-1) return 1;
 	if (StrEqual(name,"hegrenade")) return 2;
 	if (StrEqual(name,"flashbang")) return 2;
 	if (StrEqual(name,"smokegrenade")) return 2;
-	return false;
+	return 0;
 }
 
 public Action OnTakeDamage(int iVictim, int &iAttacker, int &iInflictor, float &fDamage, int &iDamageType, int &iWeapon, float fDamageForce[3], float fDamagePosition[3], int iDamageCustom)
@@ -281,18 +281,23 @@ public Action OnTakeDamage(int iVictim, int &iAttacker, int &iInflictor, float &
   {	
 	char sWeapon[32];
 	GetClientWeapon(iInflictor, sWeapon, sizeof(sWeapon));
-	//PrintToChatAll(sWeapon);
+	
 	if ((g_knife && checkWeapon(sWeapon)==1)||(g_grens && checkWeapon(sWeapon)==2))
 	{    
+		//PrintToChatAll("%s || %u",sWeapon,checkWeapon(sWeapon));
 		return Plugin_Continue;
 	}
 	
+	
 	if(iDamageType & CS_DMG_HEADSHOT) return Plugin_Continue;
 
-	else if (iAttacker != iVictim)
+
+	if (iAttacker != iVictim)
 	{
+		
 		return Plugin_Handled;
     }
+	
   }
   return Plugin_Continue;
 }
