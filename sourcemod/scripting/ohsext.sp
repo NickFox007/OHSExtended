@@ -68,7 +68,7 @@ public void OnPluginStart()
   //LoadTranslations("onlyhs.phrases");
   
   g_Cvaralways = CreateConVar("sm_onlyhs_always", "0", "Включение режима только головы по умолчанию. 1- ВКЛ, 0 = ВЫКЛ",_, true, 0.0, true, 1.0);
-  g_Cvarknife = CreateConVar("sm_onlyhs_knife", "1", "Включение урона ножом и гранатами. 1- ВКЛ, 0 = ВЫКЛ",_, true, 0.0, true, 1.0);  
+  g_Cvarknife = CreateConVar("sm_onlyhs_knife", "1", "Включение урона ножом. 1- ВКЛ, 0 = ВЫКЛ",_, true, 0.0, true, 1.0);  
   g_CvaradEnabled = CreateConVar("sm_onlyhs_adEnable", "1", "Включение оповещения о наличии команды. 1- ВКЛ, 0 = ВЫКЛ",_, true, 0.0, true, 1.0);
   g_Cvargrens = CreateConVar("sm_onlyhs_grens", "1", "Включение урона от гранат при активации режима. 1- ВКЛ, 0 = ВЫКЛ",_, true, 0.0, true, 1.0);
   g_CvaradDelay = CreateConVar("sm_onlyhs_adDelay", "1", "Задержка между раундами для оповещения");
@@ -93,6 +93,8 @@ public void OnPluginStart()
   RegConsoleCmd("sm_starths", Cmd_Start);
   RegConsoleCmd("sm_onlyhs", Cmd_Menu);
   RegConsoleCmd("sm_ohv", Cmd_Vote);
+  RegConsoleCmd("sm_hv", Cmd_Vote);
+  RegConsoleCmd("sm_head", Cmd_Vote);
 
   AutoExecConfig(true, "onlyhs_extended");
 
@@ -434,3 +436,5 @@ public void checkVote(int client){
 		}
 	}
 }
+
+
