@@ -13,7 +13,7 @@ public Plugin myinfo =
 	name = "Only headshots Extended",
 	author = "NickFox",
 	description = "Prevents all damage but headshots while mode is enabled and has lots of options for this.",
-	version = "1.0.0",
+	version = "1.1.0",
 	url = "http://vk.com/nf_dev"
 }
 
@@ -104,6 +104,11 @@ public void OnPluginStart()
 	if((hTopMenu = GetAdminTopMenu())) OnAdminMenuReady(hTopMenu);
   }
   for(int i= 1; i <= MaxClients; i++) if(IsClientInGame(i)&&!IsFakeClient(i)) SDKHook(i, SDKHook_OnTakeDamage, OnTakeDamage);
+}
+
+public void OnMapStart(){
+
+	setNull();
 }
 
 public void OnAdminMenuReady(Handle aTopMenu)
@@ -275,9 +280,15 @@ public int checkWeapon(char[] name){
 	return 0;
 }
 
+public bool IsValidClient(int client){
+
+	return (client>0&&client<65&&IsClientInGame(client));
+
+}
+
 public Action OnTakeDamage(int iVictim, int &iAttacker, int &iInflictor, float &fDamage, int &iDamageType, int &iWeapon, float fDamageForce[3], float fDamagePosition[3], int iDamageCustom)
 {
-  if (g_always||g_enabled)
+  if ((g_always||g_enabled)&&IsValidClient(iInflictor))
   {	
 	char sWeapon[32];
 	GetClientWeapon(iInflictor, sWeapon, sizeof(sWeapon));
@@ -314,7 +325,7 @@ public void RoundFreezeEnd(Event event, const char[] name, bool dbc)
 		}
 		
 	}
-	if(delayTimer>0)delayTimer--;
+	if(delayTimer>-1)delayTimer--;
 	if (roundTimer==-1&&delayTimer==-1&&g_adEnabled){
 		if (adTimer==0)ad();
 		if (adTimer>-1)adTimer--;		
@@ -325,7 +336,7 @@ public void RoundFreezeEnd(Event event, const char[] name, bool dbc)
 public void ad(){
 
 	adTimer=g_adDelay;	
-	PrintChat(-1,"На сервере доступна битва на головах. Чтобы проголосовать за её начало - пишите {darkred}!ozv");
+	PrintChat(-1,"На сервере доступна битва на головах. Чтобы проголосовать за её начало - пишите {darkred}!ohv");
 
 }
 
@@ -358,8 +369,8 @@ public void stopHS(int i){
 }
 
 public void setNull(){
-for(int i= 1; i <= MaxClients; i++)voted[i]=false;
-delayTimer = g_delay;
+	for(int i= 1; i <= MaxClients; i++)voted[i]=false;
+	delayTimer = g_delay;
 }
 
 public void OnConfigsExecuted()
