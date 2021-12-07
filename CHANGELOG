@@ -1,1 +1,4 @@
 1.0.0 - First version
+1.1.0 - Fixed: 12/07/2021 - 20:57:53: [SM] Exception reported: Client index is invalid
+      - Fixed not showing ad message
+      - Fixed ad text
